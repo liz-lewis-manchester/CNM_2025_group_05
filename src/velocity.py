@@ -17,4 +17,3 @@ def apply_velocity_perturbation(U, variation=0.1):
         Perturbed velocity for this timestep
     """
     return U * (1 + variation * np.random.randn())
-  
