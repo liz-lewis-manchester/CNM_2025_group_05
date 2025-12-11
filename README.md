@@ -9,5 +9,5 @@ This repository contains a clean and modular implementation for:
 # Features
 
 - Linear interpolation using scipy.interpolate.interp1d
-- Handling of out-of-range values (fill_value=0)
+- Handling of out-of-range values (fill_value)
 - Function separating data loading and interpolation
