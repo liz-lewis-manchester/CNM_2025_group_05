@@ -2,11 +2,9 @@ import numpy as np
 from .velocity import apply_velocity_perturbation
 
 def step_forward(theta, U, dx, dt):
-    """
-    One time step using an upwind scheme for the 1D advection equation.
+    # One time step using an upwind scheme for the 1D advection equation.
     θ_{i}^{n+1} = θ_{i}^n - c (θ_{i}^n - θ_{i-1}^n)
     where c = U dt / dx
-    """
     theta_new = theta.copy()
     c = U * dt / dx
     theta_new[1:] = theta[1:] - c * (theta[1:] - theta[:-1])
