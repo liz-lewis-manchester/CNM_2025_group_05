@@ -3,16 +3,16 @@ import numpy as np
 from scipy.interpolate import interp1d
 
 # Load initial condition data from a CSV file.
-def load_initial_conditions(initial_conditions.csv):
+def load_initial_conditions("initial_conditions.csv"):
     df = pd.read_csv("initial_conditions.csv")
     # Ensure correct column names
     required_cols = ["Distance (m)", "Concentartion (µg/m_ )"]
     if not all(col in df.columns for col in required_cols):
-        raise ValueError(f"CSV {initial_conditions} must contain columns: {required cols}")
+        raise ValueError(f"CSV must contain columns: {required_cols}")
     return df["Distance (m)"].values, df["Concentraion (µg/m_ )"].values
 
 # Now we interpolate concentration values onto the model grid
-def interpolate_initial_conditions(initial_conditions.csv, grid):
+def interpolate_initial_conditions("initial_conditions.csv", grid):
     # Load raw CSV data 
     raw_Dist, raw_Conc = load_initial_conditions("initial_conditions.csv")
     # Create linear interpolation function
