@@ -1,46 +1,43 @@
 # CNM_2025_group_05
-import pandas as pd
-import numpy as np
-from scipy.interpolate import interp1d
-import os
+# Initial Condition Interpolation Module
 
+This repository contains a clean and modular Python implementation for:
 
-def load_initial_conditions(filepath):
-    """
-    Load initial condition data from a CSV file.
-    
-    Args:
-    filepath (str): Path to the CSV file
-    (e.g., "data/initial_conditions.csv")
-    
-    Returns:
-    tuple: Two numpy arrays containing the x-coordinates and
-    the corresponding pollutant concentrations.
-    """
+1. Loading initial condition data from a CSV file
+2. Performing **linear interpolation** onto a model grid
+3. Testing and validating the interpolation results
 
-# Check if the file exists
-if not os.path.exists(filepath):
-    raise FileNotFoundError(f"File not found: {filepath}")
+This project is suitable for numerical modelling coursework, environmental simulations, or general scientific data preprocessing.
+# Features
 
-# Try reading with different encodings
-encodings_to_try = [None, "latin", "gbk"]
-df = None
+- Robust CSV loading with UTF-8 / Latin-1 / GBK fallback support
+- Linear interpolation using `scipy.interpolate.interp1d`
+- Automatic handling of out-of-range values (`fill_value=0`)
+- Clean function design separating data loading and interpolation
+- Fully working test script with example output
+# output 
+Interpolation completed successfully.
 
-for enc in encodings_to_try:
-    try:
-        if enc is None:
-        df = pd.read_csv(filepath)
-        else:
-        df = pd.read_csv(filepath, encoding=enc)
-        break
-        except UnicodeDecodeError:
-        continue
+--- Validation Results ---
+Model Grid:
+[ 0. 0.2 0.4 0.6 0.8 1. 1.2 1.4 1.6 1.8 2. 2.2 2.4 2.6
+2.8 3. 3.2 3.4 3.6 3.8 4. 4.2 4.4 4.6 4.8 5. 5.2 5.4
+5.6 5.8 6. 6.2 6.4 6.6 6.8 7. 7.2 7.4 7.6 7.8 8. 8.2
+8.4 8.6 8.8 9. 9.2 9.4 9.6 9.8 10. 10.2 10.4 10.6 10.8 11.
+11.2 11.4 11.6 11.8 12. 12.2 12.4 12.6 12.8 13. 13.2 13.4 13.6 13.8
+14. 14.2 14.4 14.6 14.8 15. 15.2 15.4 15.6 15.8 16. 16.2 16.4 16.6
+16.8 17. 17.2 17.4 17.6 17.8 18. 18.2 18.4 18.6 18.8 19. 19.2 19.4
+19.6 19.8 20. ]
 
-if df is None:
-    raise RuntimeError("Failed to read CSV file with all tested encodings.")
+Interpolated Concentration:
+[300. 184. 124. 68. 10. 10. 10. 10. 10. 10. 10. 9.6
+9.2 8.8 8.4 8. 8. 8. 8. 8. 8. 8.7 9.3
+10. 10.8 11.5 12.6 12.8 12.7 12.6 12.3 23.8 29.4 37.3
+48.2 52.6 57. 61. 66.1 72.6 126.8 126.8 126.8 85.4 85.4
+85.4 85.4 38. 38. 38. 38. 38. 38. 32. 32.
+32. 32. 24. 24. 24. 24. 12. 10. ]
 
-# Extract the first two columns as numpy arrays
-x_observed = df.iloc[:, 0].values
-c_observed = df.iloc[:, 1].values
-
-return x_observed, c_observed
+--- Single Point Query ---
+Queried point: x = 3.15 m
+Interpolated concentration: 10.0 µg/m³
+[10.]
