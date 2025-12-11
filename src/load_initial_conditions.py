@@ -1,35 +1,22 @@
 import pandas as pd
 import numpy as np
 from scipy.interpolate import interp1d
-import os
 
-def load_initial_conditions(filepath):
-    """
-    Load initial condition data from a CSV file.
+# Load initial condition data from a CSV file.
+def load_initial_conditions("initial_conditions.csv"):
+    df = pd.read_csv("initial_conditions.csv")
+    # Ensure correct column names
+    required_cols = ["Distance (m)", "Concentartion (µg/m_ )"]
+    if not all(col in df.columns for col in required_cols):
+        raise ValueError(f"CSV must contain columns: {required_cols}")
+    return df["Distance (m)"].values, df["Concentraion (µg/m_ )"].values
 
-    Returns:
-        x_observed: numpy array of x locations
-        c_observed: numpy array of concentrations
-    """
-
-    if not os.path.exists(filepath):
-        raise FileNotFoundError(f"File not found: {filepath}")
-
-    # reading with different encodings
-    encodings = [None, "latin", "gbk"]
-    df = None
-
-    for enc in encodings:
-        try:
-            df = pd.read_csv(filepath) if enc is None else pd.read_csv(filepath, encoding=enc)
-            break
-        except UnicodeDecodeError:
-            continue
-
-    if df is None:
-        raise RuntimeError("Unable to read CSV file with tested encodings.")
-
-    x_observed = df.iloc[:, 0].values
-    c_observed = df.iloc[:, 1].values
-
-    return x_observed, c_observed
+# Now we interpolate concentration values onto the model grid
+def interpolate_initial_conditions("initial_conditions.csv", grid):
+    # Load raw CSV data 
+    raw_Dist, raw_Conc = load_initial_conditions("initial_conditions.csv")
+    # Create linear interpolation function
+    interpolator = interpld(raw_Dist, raw_Conc, kind="linear", fill_value="extrapolate")    # the last bit of code allows values outside the CSV range
+    # Now we evaluate on model grid
+    interpolated = interpolator(grid)
+    return interpolated 
