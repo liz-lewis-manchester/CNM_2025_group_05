@@ -4,18 +4,18 @@ import pandas as pd
 def load_initial_conditions(csv_path: str):
  
   df = pd.read_csv(initial_condition.csv)
-
+  
   # Check required columns
   required_cols = {"Distance (m)", "Concentration (μg/m_ )"}
   if not required_cols.issubset(df.columns):
       raise ValueError(
            f"CSV {csv_path} must contain columns: {required_cols}")
-
+  
   return df
 
 def create_model_domain(x_max: float, dx: float):
- # x refers to the distance travelled by the pollutant and dx is the incremental change in distance
- # this function checks if the values are correct 
+  # x refers to the distance travelled by the pollutant and dx is the incremental change in distance
+  # this function checks if the values are correct 
   if x_max <= 0:
       raise ValueError("x_max must be positive.")
   if dx <= 0:
@@ -27,19 +27,23 @@ def create_model_domain(x_max: float, dx: float):
   grid = np.arange(0, x_max + dx, dx)
 
   return grid
-print(grid)
 
 def get_user_inputs():
  
-  print("Pollutant Transport Model Setup")
+  print("Pollutant Transport Model Setup inputs")
 
+  # for test case 1, we will need to input our own values
+ 
+  x_max = float(input("what is the max distance you wish to input in metres: "))
+  dx = float(input("what is the resolution needed (in metres): ")
+  
   # Time settings
   t_max = float(input("Enter total simulation time (seconds): "))
   dt = float(input("Enter time step (seconds): "))
 
   # Velocity
   U = float(input("Enter flow velocity U (m/s): "))
-
+`
   # Initial conditions file
   ic_file = input("enter inititial conditions filename (initial_conditions.csv): ")
   # Creating Parameters
@@ -50,7 +54,7 @@ def get_user_inputs():
      "dt": dt,
      "U": U,
      "initial_conditions_file": ic_file}
+return params
 
-  return params
-    grid_x = create_model_domain(x_max, dx)
-    times = np.arange(0, t_max + dt, dt)
+   grid_x = create_model_domain(x_max, dx)
+   times = np.arange(0, t_max + dt, dt)
