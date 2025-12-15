@@ -1,52 +1,6 @@
-# CNM_2025_group_05
-import matplotlib.pyplot as plt 
-import numpy as np
-
-# We now plot polutant concentration at several time snapshots
-# Our parameters are- results: 2D array(time,space), x_grid: 1D array(distance), dt: timestep(s), n_plots: number of snapshots to display
-def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Poluutant Distance Over Time'):
-    time_steps= results.shape[0]
-    interval= max(time_steps // n_plots, 1)
-
-    plt.figure(figsize=(10,5))
-
-    for in in range(0, time_steps, interval):
-        plt.plot(x_grid, results[i], label=f't = {i * dt:.0f} s')
-
-    plt.xlabel('Distance downstream (m)')
-    plt.ylabel('Concentration (micrograms/m^3)')
-    plt.title(title)
-    plt.grid(True)
-    plt.legend()
-    plt.tight_layout()
-    plt.show()
-
-# We now plut multiple simulation results on the same grpah for comparison
-# Our parameters are- results_dict: dict of {'label' : result_array}, x_grid: model spatial grid, dt: timestep(s)
-# Plot final time step only
-def plot_comparison(results_dict, x_grid, dt):  
-    plt.figure(figsize=(10,5))
-
-    for label, result in results_dict.items():
-        plt.plot(x_grid, result[-1], label=f'{label} (t={result.shape[0] * dt}s)')
-
-    plt.xlabel('Distance downstream (m)')
-    plt.ylabel('Concentration (micrograms/m^3)')
-    plt.title('Comparison of Final Concentration Profiles')
-    plt.grid(True)
-    plt.legend()
-    plt.tight_layout()
-    plt.show()
-
-# We also produce a heatmap showing concentration over time
-def plot_heatmap(result, x_grid, dt, title1='Concentration heatmap'):
-    plt.figure(figsize=(10,6))
-
-    plt.imshow(results, aspect='auto',extent=[x_grid[0], x_grid[-1], results.shape[0] * dt, 0], cmap='viridis')
-
-    plt.colorbar(label='Concentration (micrograms/m^3)')
-    plt.xlabel('Distance downstream (m)')
-    plt.ylabel('Time (s)')
-    plt.title(title1)
-    plt.tight_layout()
-    plt.show()
+# Making plots as a visual representation of our tests
+We plot polutant concentration at several time snapshots setting our parameters as the following- results: 2D array(time,space), x_grid: 1D array(distance), dt: timestep(s), n_plots: number of snapshots to display
+# Comparing data 
+We now plut multiple simulation results on the same graph for comparison setting our parameters as- results_dict: dict of {'label' : result_array}, x_grid: model spatial grid, dt: timestep(s) using only the final time step
+# A second visual representation of our tests
+We also produce a heatmap showing concentration over time
