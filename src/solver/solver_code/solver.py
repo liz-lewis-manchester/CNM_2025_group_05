@@ -23,10 +23,9 @@ def run_model(theta0, U, dx, dt, nt, use_random_velocity=False, variation=0.1):
     # dt : float, time step
     # nt : int, number of time steps
     # use_random_velocity : bool, enable velocity perturbation
-    # variation : float, stregnth of variation (0.1 = ±10%)
+    # variation : float, stregnth of variation (0.1 = +/-10%)
 
-    Returns:
-    - results : 2D array, shape (nt+1, nx)
+    # Returns:- results : 2D array, shape (nt+1, nx)
     
     theta = theta0.copy()
     results = [theta.copy()]
