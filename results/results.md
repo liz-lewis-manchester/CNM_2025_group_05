@@ -28,7 +28,7 @@ Shape of simulation results (time steps, spatial points):
 Number of time steps (nt) calculated:
  30
 
-# Pollutant Transport Model Setup inputs for test case 3
+# Pollutant Transport Model Setup inputs for test case 2
 What is the max distance you wish to input in metres: 50
 
 What is the resolution needed (in metres): 0.2
