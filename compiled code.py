@@ -161,7 +161,7 @@ import numpy as np
 
 # We now plot polutant concentration at several time snapshots
 # Our parameters are- results: 2D array(time,space), x_grid: 1D array(distance), dt: timestep(s), n_plots: number of snapshots to display
-def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Poluutant Distance Over Time'):
+def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Polutant Distance Over Time'):
     time_steps= results.shape[0]
     interval= max(time_steps // n_plots, 1)
 
@@ -178,7 +178,7 @@ def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Poluutant Distanc
     plt.tight_layout()
     plt.show()
 
-# We now plut multiple simulation results on the same grpah for comparison
+# We now plut multiple simulation results on the same graph for comparison
 # Our parameters are- results_dict: dict of {'label' : result_array}, x_grid: model spatial grid, dt: timestep(s)
 def plot_comparison(results_dict, x_grid, dt):  
     plt.figure(figsize=(10,5))
