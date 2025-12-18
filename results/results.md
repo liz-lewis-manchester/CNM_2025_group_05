@@ -1,13 +1,18 @@
 # Results
-In this section we will be showing the results we get from the code
+In this section we will be showing the results we get from the code from a set of paramaters chosen
 
 # Pollutant Transport Model Setup inputs
-what is the max distance you wish to input in metres: 20
-what is the resolution needed (in metres): 1
+What is the max distance you wish to input in metres: 20
+
+What is the resolution needed (in metres): 1
+
 Enter total simulation time (seconds): 10
+
 Enter time step (seconds): 2
+
 Enter flow velocity U (m/s): 30
-enter inititial conditions filename (initial_conditions.csv): initial_conditions
+
+Enter inititial conditions filename (initial_conditions.csv): initial_conditions
 
 Model parameters successfully captured:
 {'x_max': 20.0, 'dx': 1.0, 't_max': 10.0, 'dt': 2.0, 'U': 30.0, 'initial_conditions_file': 'initial_conditions'}
