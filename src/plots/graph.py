@@ -3,7 +3,7 @@ import numpy as np
 
 # We now plot polutant concentration at several time snapshots
 # Our parameters are- results: 2D array(time,space), x_grid: 1D array(distance), dt: timestep(s), n_plots: number of snapshots to display
-def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Poluutant Distance Over Time'):
+def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Polutant Distance Over Time'):
     time_steps= results.shape[0]
     interval= max(time_steps // n_plots, 1)
 
