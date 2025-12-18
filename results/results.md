@@ -1,5 +1,7 @@
+# Results
 In this section we will be showing the results we get from the code
- Pollutant Transport Model Setup inputs
+
+# Pollutant Transport Model Setup inputs
 what is the max distance you wish to input in metres: 20
 what is the resolution needed (in metres): 1
 Enter total simulation time (seconds): 10
