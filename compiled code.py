@@ -1,22 +1,23 @@
-# izzys work
 import numpy as np
 import pandas as pd
+from scipy.interpolate import interp1d
+import matplotlib.pyplot as plt
+import pytest
 
-def load_initial_conditions(csv_path: str):
- 
-  df = pd.read_csv(initial_condition.csv)
-  
-  # Check required columns
-  required_cols = {"Distance (m)", "Concentration (μg/m_ )"}
-  if not required_cols.issubset(df.columns):
-      raise ValueError(
-           f"CSV {csv_path} must contain columns: {required_cols}")
-  
-  return df
+
+# Izzy's work
+# Load initial condition data from a CSV file.
+def load_initial_conditions(csv_paths):
+    df = pd.read_csv(csv_paths, encoding='latin1')
+    # Ensure correct column names
+    required_cols = ["Distance (m)", "Concentration (µg/m_ )"]
+    if not all(col in df.columns for col in required_cols):
+        raise ValueError(f"CSV must contain columns: {required_cols}")
+    return df["Distance (m)"].values, df["Concentration (µg/m_ )"].values
 
 def create_model_domain(x_max: float, dx: float):
   # x refers to the distance travelled by the pollutant and dx is the incremental change in distance
-  # this function checks if the values are correct 
+  # this function checks if the values are correct
   if x_max <= 0:
       raise ValueError("x_max must be positive.")
   if dx <= 0:
@@ -30,80 +31,55 @@ def create_model_domain(x_max: float, dx: float):
   return grid
 
 def get_user_inputs():
- 
+
   print("Pollutant Transport Model Setup inputs")
 
   # for test case 1, we will need to input our own values
- 
+
   x_max = float(input("what is the max distance you wish to input in metres: "))
-  dx = float(input("what is the resolution needed (in metres): ")
-  
+  dx = float(input("what is the resolution needed (in metres): "))
+
   # Time settings
   t_max = float(input("Enter total simulation time (seconds): "))
   dt = float(input("Enter time step (seconds): "))
 
   # Velocity
   U = float(input("Enter flow velocity U (m/s): "))
-`
+
   # Initial conditions file
   ic_file = input("enter inititial conditions filename (initial_conditions.csv): ")
   # Creating Parameters
-  params = {                        
+  params = {
      "x_max": x_max,
      "dx": dx,
      "t_max": t_max,
      "dt": dt,
      "U": U,
      "initial_conditions_file": ic_file}
-return params
-
-   grid_x = create_model_domain(x_max, dx)
-   times = np.arange(0, t_max + dt, dt)
-
-
+  return params
 
 # Aiqing's work
-import pandas as pd
-import numpy as np
-from scipy.interpolate import interp1d
-
-# Load initial condition data from a CSV file.
-def load_initial_conditions(csv_paths):
-    df = pd.read_csv(csv_paths)
-    # Ensure correct column names
-    required_cols = ["Distance (m)", "Concentartion (µg/m_ )"]
-    if not all(col in df.columns for col in required_cols):
-        raise ValueError(f"CSV must contain columns: {required_cols}")
-    return df["Distance (m)"].values, df["Concentraion (µg/m_ )"].values
-
 # Now we interpolate concentration values onto the model grid
 def interpolate_initial_conditions(csv_paths, grid):
-    # Load raw CSV data 
+    # Load raw CSV data
     raw_Dist, raw_Conc = load_initial_conditions(csv_paths)
     # Create linear interpolation function
-    interpolator = interpld(raw_Dist, raw_Conc, kind="linear", fill_value="extrapolate")    # the last bit of code allows values outside the CSV range
+    interpolator = interp1d(raw_Dist, raw_Conc, kind="linear", fill_value="extrapolate")    # the last bit of code allows values outside the CSV range
     # Now we evaluate on model grid
     interpolated = interpolator(grid)
-    return interpolated 
+    return interpolated
 
-
-
-# rudys work 
+# Rudy's work
 #solver
-import numpy as np
-import pandas as pd
-from .velocity import apply_velocity_perturbation
-
 def step_forward(theta, U, dx, dt):
     # One time step using an upwind scheme for the 1D advection equation.
     # θ_{i}^{n+1} = θ_{i}^n - c (θ_{i}^n - θ_{i-1}^n)
     # where c = U dt / dx
     theta_new = theta.copy()
     c = U * dt / dx
-    # Updating all grid points except the first one. 
+    # Updating all grid points except the first one.
     theta_new[1:] = theta[1:] - c * (theta[1:] - theta[:-1])
     return theta_new
-
 
 def run_model(theta0, U, dx, dt, nt, use_random_velocity=False, variation=0.1):
     # Run the pollutant transport model.
@@ -115,11 +91,10 @@ def run_model(theta0, U, dx, dt, nt, use_random_velocity=False, variation=0.1):
     # dt : float, time step
     # nt : int, number of time steps
     # use_random_velocity : bool, enable velocity perturbation
-    # variation : float, stregnth of variation (0.1 = ±10%)
+    # variation : float, stregnth of variation (0.1 = +/-10%)
 
-    Returns:
-    - results : 2D array, shape (nt+1, nx)
-    
+    # Returns:- results : 2D array, shape (nt+1, nx)
+
     theta = theta0.copy()
     results = [theta.copy()]
 
@@ -136,38 +111,32 @@ def run_model(theta0, U, dx, dt, nt, use_random_velocity=False, variation=0.1):
         results.append(theta.copy())
 
     return np.array(results)
-  
-  #velocity
-  import numpy as np
 
+#velocity
 def apply_velocity_perturbation(U, variation=0.1):
-    
-    # Apply a random ±variation perturbation to the velocity.
-    Parameters
-    U : float
-        Base velocity (m/s)
-    variation : float
-        Fractional variation (0.1 = ±10%)
 
-    Returns
-    float
-        Perturbed velocity for this timestep
+    # Apply a random ±variation perturbation to the velocity.
+    # Parameters
+    # U : float
+    #     Base velocity (m/s)
+    # variation : float
+    #     Fractional variation (0.1 = +/-10%)
+
+    # Returns
+    # float
+    #     Perturbed velocity for this timestep
     return U * (1 + variation * np.random.randn())
 
-
-#folajimis part
-import matplotlib.pyplot as plt 
-import numpy as np
-
+# Folajimi's part
 # We now plot polutant concentration at several time snapshots
 # Our parameters are- results: 2D array(time,space), x_grid: 1D array(distance), dt: timestep(s), n_plots: number of snapshots to display
-def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Polutant Distance Over Time'):
+def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Pollutant Distance Over Time'):
     time_steps= results.shape[0]
     interval= max(time_steps // n_plots, 1)
 
     plt.figure(figsize=(10,5))
 
-    for in in range(0, time_steps, interval):
+    for i in range(0, time_steps, interval):
         plt.plot(x_grid, results[i], label=f't = {i * dt:.0f} s')
 
     plt.xlabel('Distance downstream (m)')
@@ -176,11 +145,12 @@ def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Polutant Distance
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
+    plt.savefig('my_plot.png')
     plt.show()
 
-# We now plut multiple simulation results on the same graph for comparison
+    # We now plut multiple simulation results on the same graph for comparison
 # Our parameters are- results_dict: dict of {'label' : result_array}, x_grid: model spatial grid, dt: timestep(s)
-def plot_comparison(results_dict, x_grid, dt):  
+def plot_comparison(results_dict, x_grid, dt):
     plt.figure(figsize=(10,5))
 
     for label, result in results_dict.items():
@@ -192,13 +162,49 @@ def plot_comparison(results_dict, x_grid, dt):
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
+    plt.savefig('my_plot.png')
     plt.show()
+
+# Execution Flow
+
+# 1. Get Model Parameters
+model_params = get_user_inputs()
+
+x_max = model_params["x_max"]
+dx = model_params["dx"]
+t_max = model_params["t_max"]
+dt = model_params["dt"]
+U = model_params["U"]
+ic_file = model_params["initial_conditions_file"]
+
+print("\nModel parameters successfully captured:")
+print(model_params)
+
+# Ensure the initial conditions file has the .csv extension
+if not ic_file.endswith('.csv'):
+    ic_file = ic_file + '.csv'
+
+# 2. Create Model Domain and Interpolate Initial Conditions
+grid_x = create_model_domain(x_max, dx)
+initial_concentrations = interpolate_initial_conditions(ic_file, grid_x)
+
+print("\nSpatial grid created (first 10 points):\n", grid_x[:10])
+print("\nInitial concentrations interpolated onto the grid (first 10 values):\n", initial_concentrations[:10])
+
+# 3. Run Pollutant Transport Model
+nt = max(1, int(t_max / dt)) if t_max > 0 and dt > 0 else 0
+simulation_results = run_model(theta0=initial_concentrations, U=U, dx=dx, dt=dt, nt=nt)
+
+print("\nShape of simulation results (time steps, spatial points):\n", simulation_results.shape)
+print("Number of time steps (nt) calculated:\n", nt)
+
+# 4. Visualize Concentration Over Time
+plot_time_snapshots(simulation_results, grid_x, dt, title='Pollutant Concentration Over Time')
+print("\nPlot of pollutant concentration over time generated.")
+
 
 
 # bilals part
-import numpy as np
-import pytest
-
 # Import your solver (adjust the import to your project structure)
 # from src.model import simulate_advection
 
