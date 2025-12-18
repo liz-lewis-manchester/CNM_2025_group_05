@@ -20,7 +20,7 @@ def plot_time_snapshots(results, x_grid, dt, n_plots=8, title='Poluutant Distanc
     plt.tight_layout()
     plt.show()
 
-# We now plut multiple simulation results on the same grpah for comparison
+# We now plut multiple simulation results on the same graph for comparison
 # Our parameters are- results_dict: dict of {'label' : result_array}, x_grid: model spatial grid, dt: timestep(s)
 def plot_comparison(results_dict, x_grid, dt):  
     plt.figure(figsize=(10,5))
@@ -33,18 +33,5 @@ def plot_comparison(results_dict, x_grid, dt):
     plt.title('Comparison of Final Concentration Profiles')
     plt.grid(True)
     plt.legend()
-    plt.tight_layout()
-    plt.show()
-
-# We also produce a heatmap showing concentration over time
-def plot_heatmap(result, x_grid, dt, title1='Concentration heatmap'):
-    plt.figure(figsize=(10,6))
-
-    plt.imshow(results, aspect='auto',extent=[x_grid[0], x_grid[-1], results.shape[0] * dt, 0], cmap='viridis')
-
-    plt.colorbar(label='Concentration (micrograms/m^3)')
-    plt.xlabel('Distance downstream (m)')
-    plt.ylabel('Time (s)')
-    plt.title(title1)
     plt.tight_layout()
     plt.show()
